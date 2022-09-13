@@ -11,8 +11,7 @@ def show_catalogs(request: "HttpRequest"):
     items = CatalogItem.objects.all()
     ctx = {
         "items": items,
-        # TODO: Fake data xd
-        "student_name": "Ren",
-        "student_id": 2,
+        "student_name": "Rendy Arya Kemal",
+        "student_id": 2106639945,
     }
     return render(request, "katalog.html", ctx)

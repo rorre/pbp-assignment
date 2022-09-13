@@ -36,7 +36,7 @@ class AnimalTestCase(TestCase):
             CatalogItem.objects.create(**case)
 
     def test_fetch(self):
-        response = self.client.get(reverse("katalog:index"))
+        response = self.client.get(reverse("katalog:show_catalogs"))
         self.assertContains(response, "Sample 1")  # Name from sample 1
         self.assertContains(response, "69420")  # Price from sample 2
         self.assertContains(response, "200")  # Stok from sample 3

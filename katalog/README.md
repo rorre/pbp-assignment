@@ -4,7 +4,7 @@ Deployed URL: [Heroku](https://pbp22t2.herokuapp.com/katalog)
 
 ## Bagan Request-Response
 
-![](https://i.imgur.com/VGaPIeP.png)
+![](https://i.imgur.com/gFEvMME.png)
 
 Client mengirim request kepada server, lalu server meneruskan request tersebut ke Django. Django lalu mem-_parse_ URL yang diterima, lalu mencari _mapping_ URL ke _view function_ di file `urls.py`. _View function_ berada di `views.py` yang melakukan query ke database melewati models yang telah didefinisikan di `models.py`, lalu me-_render_ HTML berdasarkan template yang ada. Setelah render dilakukan, response dikirim kembali ke client.
 

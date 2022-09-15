@@ -1,62 +1,33 @@
-# Template Proyek Django PBP
+# Assignment 2
 
-Pemrograman Berbasis Platform (CSGE602022) - diselenggarakan oleh Fakultas Ilmu Komputer Universitas Indonesia, Semester Ganjil 2022/2023
+Deployed URL: [Heroku](https://pbp22t2.herokuapp.com/katalog)
 
-*Read this in other languages: [Indonesian](README.md), [English](README.en.md)*
+## Bagan Request-Response
 
-## Pendahuluan
+![](https://i.imgur.com/gFEvMME.png)
 
-Repositori ini merupakan sebuah template yang dirancang untuk membantu mahasiswa yang sedang mengambil mata kuliah Pemrograman Berbasis Platform (CSGE602022) mengetahui struktur sebuah proyek aplikasi Django serta file dan konfigurasi yang penting dalam berjalannya aplikasi. Kamu dapat dengan bebas menyalin isi dari repositori ini atau memanfaatkan repositori ini sebagai pembelajaran sekaligus awalan dalam membuat sebuah proyek Django.
+Client mengirim request kepada server, lalu server meneruskan request tersebut ke Django. Django lalu mem-_parse_ URL yang diterima, lalu mencari _mapping_ URL ke _view function_ di file `urls.py`. _View function_ berada di `views.py` yang melakukan query ke database melewati models yang telah didefinisikan di `models.py`, lalu me-_render_ HTML berdasarkan template yang ada. Setelah render dilakukan, response dikirim kembali ke client.
 
-## Cara Menggunakan
+## _Virtual Environment_
 
-Apabila kamu ingin menggunakan repositori ini sebagai repositori awalan yang nantinya akan kamu modifikasi:
+_Virtual environment_ digunakan untuk menjaga konsistensi dari _dependency_ yang ada di proyek tersebut, sehingga tidak terjadi bentrok antar satu proyek dengan proyek lainnya yang dapat menyebabkan error.
 
-1. Buka laman GitHub repositori templat kode, lalu klik tombol "**Use this template**"
-   untuk membuat salinan repositori ke dalam akun GitHub milikmu.
-2. Buka laman GitHub repositori yang dibuat dari templat, lalu gunakan perintah
-   `git clone` untuk menyalin repositorinya ke suatu lokasi di dalam sistem
-   berkas (_filesystem_) komputermu:
+Aplikasi dapat berjalan tanpa menggunakan _virtual environment_, asalkan versi dari _dependency_ yang terinstall di _global environment_ dapat menjalankan aplikasi Django yang kita buat.
 
-   ```shell
-   git clone <URL ke repositori di GitHub> <path ke suatu lokasi di filesystem>
-   ```
-3. Masuk ke dalam repositori yang sudah di-_clone_ dan jalankan perintah berikut
-   untuk menyalakan _virtual environment_:
+## Implementasi
 
-   ```shell
-   python -m venv env
-   ```
-4. Nyalakan environment dengan perintah berikut:
+### `views.py`
 
-   ```shell
-   # Windows
-   .\env\Scripts\activate
-   # Linux/Unix, e.g. Ubuntu, MacOS
-   source env/bin/activate
-   ```
-5. Install dependencies yang dibutuhkan untuk menjalankan aplikasi dengan perintah berikut:
+Di file ini, dibuat _function_ baru yang menerima argumen request `show_catalogs(request: HttpRequest)`. Di dalam _function_ tersebut mengambil semua data dari model yang di simpan dalam context, lalu di-render ke template HTML menggunakan _function_ `render()`.
 
-   ```shell
-   pip install -r requirements.txt
-   ```
+### `urls.py`
 
-6. Jalankan aplikasi Django menggunakan server pengembangan yang berjalan secara
-   lokal:
+Berdasarkan _function_ yang telah dibuat di `views.py` sebelumnya, _function_ tersebut di-_import_ lalu didefinisikan dalam list `urlpatterns`, yang berisi `[ path("", show_catalogs, name="show_catalogs") ]`
 
-   ```shell
-   python manage.py runserver
-   ```
-7. Bukalah `http://localhost:8000` pada browser favoritmu untuk melihat apakah aplikasi sudah berjalan dengan benar.
+### `katalog.html`
 
-## Contoh Deployment 
+File ini adalah file template HTML yang sudah disediakan, hanya cukup melengkapi. Berdasarkan _context_ yang sudah diberikan, dilakukan looping untuk semua item katalog dengan `{% for item in items %}`, dan menuliskan semua data dari suatu elemen (`<td>`) dalam satu row html untuk satu elemen (`<tr>`)
 
-Pada template ini, deployment dilakukan dengan memanfaatkan GitHub Actions sebagai _runner_ dan Heroku sebagai platform Hosting aplikasi. 
+## Deployment
 
-Untuk melakukan deployment, kamu dapat melihat instruksi yang ada pada [Tutorial 0](https://pbp-fasilkom-ui.github.io/ganjil-2023/assignments/tutorial/tutorial-0).
-
-Untuk contoh aplikasi Django yang sudah di deploy, dapat kamu akses di [https://django-pbp-template.herokuapp.com/](https://django-pbp-template.herokuapp.com/)
-
-## Credits
-
-Template ini dibuat berdasarkan [PBP Ganjil 2021](https://gitlab.com/PBP-2021/pbp-lab) yang ditulis oleh Tim Pengajar Pemrograman Berbasis Platform 2021 ([@prakashdivyy](https://gitlab.com/prakashdivyy)) dan [django-template-heroku](https://github.com/laymonage/django-template-heroku) yang ditulis oleh [@laymonage, et al.](https://github.com/laymonage). Template ini dirancang sedemikian rupa sehingga mahasiswa dapat menjadikan template ini sebagai awalan serta acuan dalam mengerjakan tugas maupun dalam berkarya.
+Untuk men-deploy, cukup menaruh `HEROKU_API_KEY` dari settings account dan `HEROKU_APP_NAME` di secrets GitHub Actions.

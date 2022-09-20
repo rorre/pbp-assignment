@@ -1,0 +1,112 @@
+[
+  {
+    "model": "mywatchlist.mywatchlist",
+    "pk": 1,
+    "fields": {
+      "watched": true,
+      "title": "Everything Everywhere All At Once",
+      "rating": 4,
+      "release_date": "2022-06-22",
+      "review": "Very epic"
+    }
+  },
+  {
+    "model": "mywatchlist.mywatchlist",
+    "pk": 2,
+    "fields": {
+      "watched": true,
+      "title": "Morbius",
+      "rating": 3,
+      "release_date": "2022-03-30",
+      "review": "It's morbin time"
+    }
+  },
+  {
+    "model": "mywatchlist.mywatchlist",
+    "pk": 3,
+    "fields": {
+      "watched": true,
+      "title": "Pinocchio: A True Story",
+      "rating": 1,
+      "release_date": "2022-02-22",
+      "review": "Father, when can I leave to be on my own?"
+    }
+  },
+  {
+    "model": "mywatchlist.mywatchlist",
+    "pk": 4,
+    "fields": {
+      "watched": true,
+      "title": "Bee Movie",
+      "rating": 5,
+      "release_date": "2007-11-02",
+      "review": "Ya like jazz?"
+    }
+  },
+  {
+    "model": "mywatchlist.mywatchlist",
+    "pk": 5,
+    "fields": {
+      "watched": true,
+      "title": "Joker (2019)",
+      "rating": 3,
+      "release_date": "2019-10-02",
+      "review": "We live in a society"
+    }
+  },
+  {
+    "model": "mywatchlist.mywatchlist",
+    "pk": 6,
+    "fields": {
+      "watched": false,
+      "title": "Shrek",
+      "rating": 4,
+      "release_date": "2001-04-22",
+      "review": ""
+    }
+  },
+  {
+    "model": "mywatchlist.mywatchlist",
+    "pk": 7,
+    "fields": {
+      "watched": false,
+      "title": "300",
+      "rating": 3,
+      "release_date": "2007-03-09",
+      "review": ""
+    }
+  },
+  {
+    "model": "mywatchlist.mywatchlist",
+    "pk": 8,
+    "fields": {
+      "watched": true,
+      "title": "Toy Story",
+      "rating": 4,
+      "release_date": "1995-11-22",
+      "review": "You are a toy!!!"
+    }
+  },
+  {
+    "model": "mywatchlist.mywatchlist",
+    "pk": 9,
+    "fields": {
+      "watched": false,
+      "title": "Willy Wonka & the Chocolate Factory",
+      "rating": 1,
+      "release_date": "1971-06-30",
+      "review": ""
+    }
+  },
+  {
+    "model": "mywatchlist.mywatchlist",
+    "pk": 10,
+    "fields": {
+      "watched": true,
+      "title": "WALL-E",
+      "rating": 4,
+      "release_date": "2008-08-13",
+      "review": "WALL-E? Evaaaaaaaaaaaa"
+    }
+  }
+]

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>My Watchlist: PBP Assignment 2</h1>
+
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Release Date</th>
+    <th>Watched?</th>
+    <th>Rating</th>
+    <th>Review</th>
+  </tr>
+  {% for item in data %}
+  <tr>
+    <td>{{ item.title }}</td>
+    <td>{{ item.release_date }}</td>
+    <td>{{ item.watched }}</td>
+    <td>{{ item.rating }}</td>
+    <td>{{ item.review }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% endblock content %}

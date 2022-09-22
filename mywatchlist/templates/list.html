@@ -4,6 +4,12 @@
 
 <h1>My Watchlist: PBP Assignment 2</h1>
 
+{% if has_more_watch %}
+<p>Selamat, kamu sudah banyak menonton!</p>
+{% else %}
+<p>Wah, kamu masih sedikit menonton!</p>
+{% endif %}
+
 <table>
   <tr>
     <th>Title</th>

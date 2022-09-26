@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>TODO List</title>
+{% endblock meta %}
+
+{% block content %}
+<p>Halo, {{ user.get_username }} | <a href="{% url 'todolist:logout_user' %}">Keluar</a></p>
+<a href="{% url 'todolist:create_todo' %}">Buat baru</a>
+
+<table>
+  <tr>
+    <th>Date</th>
+    <th>Title</th>
+    <th>Description</th>
+  </tr>
+  {% for todo in todos %}
+  <tr>
+    <td>{{ todo.date }}</td>
+    <td>{{ todo.title }}</td>
+    <td>{{ todo.description }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock content %}

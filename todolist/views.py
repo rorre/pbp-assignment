@@ -49,7 +49,7 @@ def logout_user(request: HttpRequest):
 
 @login_required(login_url="/todolist/login")
 def show_todos(request: HttpRequest):
-    todos = Task.objects.filter(user=request.user).all()
+    todos = Task.objects.filter(user=request.user).order_by("date").all()
     ctx = {"todos": todos}
     return render(request, "list_todos.html", ctx)
 

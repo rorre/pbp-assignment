@@ -22,4 +22,15 @@
   </tr>
   {% endfor %}
 </table>
+ 
+{% if messages %}
+  <ul class="msg">
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+
+
 {% endblock content %}

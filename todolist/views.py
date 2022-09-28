@@ -71,3 +71,28 @@ def create_todo(request: HttpRequest):
     form = NewTodoForm()
     ctx = {"form": form}
     return render(request, "create.html", ctx)
+
+
+def update_todo(request: HttpRequest, post_id: int):
+    if request.method == "POST":
+        task = Task.objects.filter(id=post_id, user=request.user).first()
+        if task:
+            task.is_finished = not task.is_finished
+            task.save()
+            messages.success(request, "Berhasil update!")
+        else:
+            messages.error(request, "Task tidak ditemukan!")
+
+    return redirect("todolist:show_todos")
+
+
+def delete_todo(request: HttpRequest, post_id: int):
+    if request.method == "POST":
+        task = Task.objects.filter(id=post_id, user=request.user).first()
+        if task:
+            task.delete()
+            messages.success(request, "Berhasil dihapus!")
+        else:
+            messages.error(request, "Task tidak ditemukan!")
+
+    return redirect("todolist:show_todos")

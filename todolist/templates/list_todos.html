@@ -5,7 +5,10 @@
 {% endblock meta %}
 
 {% block content %}
-<p>Halo, {{ user.get_username }} | <a href="{% url 'todolist:logout_user' %}">Keluar</a></p>
+<p>
+  Halo, {{ user.get_username }} |
+  <a href="{% url 'todolist:logout_user' %}">Keluar</a>
+</p>
 <a href="{% url 'todolist:create_todo' %}">Buat baru</a>
 
 <table>
@@ -13,24 +16,37 @@
     <th>Date</th>
     <th>Title</th>
     <th>Description</th>
+    <th>Is Finished</th>
+    <th>Delete</th>
   </tr>
   {% for todo in todos %}
   <tr>
     <td>{{ todo.date }}</td>
     <td>{{ todo.title }}</td>
     <td>{{ todo.description }}</td>
+    <td>
+      {{ todo.is_finished}} |
+      <form action="{% url 'todolist:update_todo' todo.id %}" method="POST">
+        {% csrf_token %}
+        <button>Toggle</button>
+      </form>
+    </td>
+    <td>
+      <form action="{% url 'todolist:delete_todo' todo.id %}" method="POST">
+        {% csrf_token %}
+        <button>Delete</button>
+      </form>
+    </td>
   </tr>
   {% endfor %}
 </table>
- 
+
 {% if messages %}
-  <ul class="msg">
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-  </ul>
+<ul class="msg">
+  {% for message in messages %}
+  <li>{{ message }}</li>
+  {% endfor %}
+</ul>
 {% endif %}
-
-
 
 {% endblock content %}

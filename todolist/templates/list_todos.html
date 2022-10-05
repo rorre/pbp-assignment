@@ -25,7 +25,7 @@
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
     {% for todo in todos %}
-    <div class="card bg-neutral text-neutral-content">
+    <div class="scale-100 hover:scale-105 transition card bg-neutral text-neutral-content">
       <div class="card-body items-center text-center">
         <h2 class="card-title">{{ todo.title }}</h2>
         <span>{{ todo.date }} | {{ todo.is_finished | yesno:"Finished,Not Finished" }}</span>

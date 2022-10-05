@@ -13,7 +13,9 @@ from todolist.models import Task
 class NewTodoForm(forms.Form):
     date = forms.DateField(label="Tanggal")
     title = forms.CharField(label="Judul")
-    description = forms.CharField(label="Deskripsi", widget=forms.Textarea)
+    description = forms.CharField(
+        label="Deskripsi", widget=forms.Textarea(attrs={"cols": ""})
+    )
 
 
 def register(request: HttpRequest):

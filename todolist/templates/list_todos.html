@@ -5,48 +5,46 @@
 {% endblock meta %}
 
 {% block content %}
-<p>
-  Halo, {{ user.get_username }} |
-  <a href="{% url 'todolist:logout_user' %}">Keluar</a>
-</p>
-<a href="{% url 'todolist:create_todo' %}">Buat baru</a>
 
-<table>
-  <tr>
-    <th>Date</th>
-    <th>Title</th>
-    <th>Description</th>
-    <th>Is Finished</th>
-    <th>Delete</th>
-  </tr>
-  {% for todo in todos %}
-  <tr>
-    <td>{{ todo.date }}</td>
-    <td>{{ todo.title }}</td>
-    <td>{{ todo.description }}</td>
-    <td>
-      {{ todo.is_finished}} |
-      <form action="{% url 'todolist:update_todo' todo.id %}" method="POST">
-        {% csrf_token %}
-        <button>Toggle</button>
-      </form>
-    </td>
-    <td>
-      <form action="{% url 'todolist:delete_todo' todo.id %}" method="POST">
-        {% csrf_token %}
-        <button>Delete</button>
-      </form>
-    </td>
-  </tr>
-  {% endfor %}
-</table>
+<div class="container mx-auto pt-4 flex flex-col gap-4">
+  <div class="flex flex-row items-center justify-center md:justify-end gap-4">
+    <p class="text-xl">
+      Halo, {{ user.get_username }}
+    </p>
+    <a href="{% url 'todolist:logout_user' %}" class="btn btn-error ">Keluar</a>
+    <a href="{% url 'todolist:create_todo' %}" class="btn btn-primary">Buat baru</a>
+  </div>
 
-{% if messages %}
-<ul class="msg">
-  {% for message in messages %}
-  <li>{{ message }}</li>
-  {% endfor %}
-</ul>
-{% endif %}
+  {% if messages %}
+  <ul class="alert alert-info flex-col text-left text-info-content">
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
 
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    {% for todo in todos %}
+    <div class="card bg-neutral text-neutral-content">
+      <div class="card-body items-center text-center">
+        <h2 class="card-title">{{ todo.title }}</h2>
+        <span>{{ todo.date }} | {{ todo.is_finished | yesno:"Finished,Not Finished" }}</span>
+        <p>{{ todo.description }}<p>
+        
+        <div class="card-actions justify-end">
+          <form action="{% url 'todolist:update_todo' todo.id %}" method="POST">
+            {% csrf_token %}
+            <button class="btn btn-primary">Toggle</button>
+          </form>
+          <form action="{% url 'todolist:delete_todo' todo.id %}" method="POST">
+            {% csrf_token %}
+            <button class="btn btn-error">Delete</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
 {% endblock content %}

@@ -29,8 +29,8 @@
       <div class="card-body items-center text-center">
         <h2 class="card-title">{{ todo.title }}</h2>
         <span>{{ todo.date }} | {{ todo.is_finished | yesno:"Finished,Not Finished" }}</span>
-        <p>{{ todo.description }}<p>
-        
+        <p class="break-all">{{ todo.description }}<p>
+ 
         <div class="card-actions justify-end">
           <form action="{% url 'todolist:update_todo' todo.id %}" method="POST">
             {% csrf_token %}

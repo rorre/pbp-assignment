@@ -6,13 +6,22 @@
 
 {% block content %}
 
+<style>
+  input, textarea {
+   padding: 0.5rem;
+   border: 1px solid;
+   border-radius: 8px;
+   width: 100%
+  }
+</style>
+
 <div class="container mx-auto pt-4 flex flex-col gap-4">
   <div class="flex flex-row items-center justify-center md:justify-end gap-4">
     <p class="text-xl">
       Halo, {{ user.get_username }}
     </p>
     <a href="{% url 'todolist:logout_user' %}" class="btn btn-error ">Keluar</a>
-    <a href="{% url 'todolist:create_todo' %}" class="btn btn-primary">Buat baru</a>
+    <label for="my-modal" class="btn btn-primary">Buat baru</a>
   </div>
 
   {% if messages %}
@@ -23,28 +32,98 @@
   </ul>
   {% endif %}
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-    {% for todo in todos %}
-    <div class="scale-100 hover:scale-105 transition card bg-neutral text-neutral-content">
-      <div class="card-body items-center text-center">
-        <h2 class="card-title">{{ todo.title }}</h2>
-        <span>{{ todo.date }} | {{ todo.is_finished | yesno:"Finished,Not Finished" }}</span>
-        <p class="break-all">{{ todo.description }}<p>
- 
-        <div class="card-actions justify-end">
-          <form action="{% url 'todolist:update_todo' todo.id %}" method="POST">
-            {% csrf_token %}
-            <button class="btn btn-primary">Toggle</button>
-          </form>
-          <form action="{% url 'todolist:delete_todo' todo.id %}" method="POST">
-            {% csrf_token %}
-            <button class="btn btn-error">Delete</button>
-          </form>
-        </div>
-      </div>
-    </div>
-    {% endfor %}
+  <div id="todosContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
   </div>
 
+  <input type="checkbox" id="my-modal" class="modal-toggle" />
+  <label for="my-modal" class="modal cursor-pointer">
+    <label for="" class="modal-box relative">
+      <form id="newForm" class="flex flex-col gap-4">
+        {% csrf_token %}
+        <div class="form-control w-full max-w-md">
+            <label for="id_date">Tanggal:</label>
+            <input type="text" name="date" required="" id="id_date">
+        </div>
+    
+        <div class="form-control w-full max-w-md">
+            <label for="id_title">Judul:</label>
+            <input type="text" name="title" required="" id="id_title">
+        </div>
+    
+        <div class="form-control w-full max-w-md">
+            <label for="id_description">Deskripsi:</label>
+            <textarea name="description" cols="" rows="10" required="" id="id_description"></textarea>
+        </div>
+
+
+        <div class="flex flex-col md:flex-row gap-2 w-full">
+          <label for="my-modal" class="btn">Batal</label>
+          <button class="btn btn-primary" id="newBtn">Buat</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
+
+<script>
+  let container;
+  function createCardHtml(todo, id) {
+    const { title, date, description} = todo
+    const isFinishedText = todo.is_finished ? "Finished" : "Not Finished"
+    return `
+      <div class="scale-100 hover:scale-105 transition card bg-neutral text-neutral-content">
+        <div class="card-body items-center text-center">
+          <h2 class="card-title">${title}</h2>
+          <span>${date} | ${isFinishedText}</span>
+          <p class="break-all">${description}</p>
+
+          <div class="card-actions justify-end">
+            <form action="/todolist/update/${id}" method="POST">
+              {% csrf_token %}
+              <button class="btn btn-primary">Toggle</button>
+            </form>
+            <form action="/todolist/delete/${id}" method="POST">
+              {% csrf_token %}
+              <button class="btn btn-error">Delete</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    `
+  }
+
+  function renderTodo(todos) {
+    todos.map((todo) => {
+      container.append(createCardHtml(todo.fields, todo.pk))
+    })
+  }
+
+  function fetchData() {
+    container.empty()
+    $.get("{% url 'todolist:show_todos_json' %}", renderTodo)
+  }
+
+  function createTodo(e) {
+    e.preventDefault()
+     $.ajax({
+      type: 'POST',
+      url: '/todolist/create/json',
+      data: $("#newForm").serialize(), 
+      success: () => {
+        alert("Done!")
+        $("#my-modal").click()
+        fetchData()
+      },
+      dataType: 'json'
+    });
+  }
+
+  $(document).ready(() => {
+    $("#newBtn").click(createTodo)
+    container = $("#todosContainer")
+    fetchData()
+  })
+
+
+</script>
 {% endblock content %}

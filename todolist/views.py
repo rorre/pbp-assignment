@@ -1,5 +1,7 @@
 from django import forms
+from django.core import serializers
 from django.http import HttpRequest
+from django.http.response import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth.forms import UserCreationForm
@@ -44,6 +46,7 @@ def login_user(request: HttpRequest):
     return render(request, "login.html")
 
 
+@login_required(login_url="/todolist/login")
 def logout_user(request: HttpRequest):
     logout(request)
     return redirect("todolist:login_user")
@@ -56,6 +59,7 @@ def show_todos(request: HttpRequest):
     return render(request, "list_todos.html", ctx)
 
 
+@login_required(login_url="/todolist/login")
 def create_todo(request: HttpRequest):
     if request.method == "POST":
         form = NewTodoForm(request.POST)
@@ -75,6 +79,7 @@ def create_todo(request: HttpRequest):
     return render(request, "create.html", ctx)
 
 
+@login_required(login_url="/todolist/login")
 def update_todo(request: HttpRequest, post_id: int):
     if request.method == "POST":
         task = Task.objects.filter(id=post_id, user=request.user).first()
@@ -88,6 +93,7 @@ def update_todo(request: HttpRequest, post_id: int):
     return redirect("todolist:show_todos")
 
 
+@login_required(login_url="/todolist/login")
 def delete_todo(request: HttpRequest, post_id: int):
     if request.method == "POST":
         task = Task.objects.filter(id=post_id, user=request.user).first()
@@ -98,3 +104,30 @@ def delete_todo(request: HttpRequest, post_id: int):
             messages.error(request, "Task tidak ditemukan!")
 
     return redirect("todolist:show_todos")
+
+
+@login_required(login_url="/todolist/login")
+def show_todos_json(request: HttpRequest):
+    todos = Task.objects.filter(user=request.user).order_by("data").all()
+    return HttpResponse(
+        serializers.serialize("json", todos), content_type="application/json"
+    )
+
+
+@login_required(login_url="/todolist/login")
+def add_todos_json(request: HttpRequest):
+    if request.method == "POST":
+        form = NewTodoForm(request.POST)
+        if form.is_valid():
+            task = Task(
+                date=request.POST["date"],
+                title=request.POST["title"],
+                description=request.POST["description"],
+                user=request.user,
+            )
+            task.save()
+            return HttpResponse(
+                serializers.serialize("json", [task]),
+                content_type="application/json",
+            )
+    return HttpResponse("Invalid method", status_code=405)

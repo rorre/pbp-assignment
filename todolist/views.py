@@ -1,14 +1,13 @@
 from django import forms
 from django.core import serializers
-from django.http import HttpRequest
-from django.http.response import HttpResponse
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-
+from datetime import date
 from todolist.models import Task
 
 
@@ -108,7 +107,7 @@ def delete_todo(request: HttpRequest, post_id: int):
 
 @login_required(login_url="/todolist/login")
 def show_todos_json(request: HttpRequest):
-    todos = Task.objects.filter(user=request.user).order_by("data").all()
+    todos = Task.objects.filter(user=request.user).order_by("date").all()
     return HttpResponse(
         serializers.serialize("json", todos), content_type="application/json"
     )
@@ -117,17 +116,15 @@ def show_todos_json(request: HttpRequest):
 @login_required(login_url="/todolist/login")
 def add_todos_json(request: HttpRequest):
     if request.method == "POST":
-        form = NewTodoForm(request.POST)
-        if form.is_valid():
-            task = Task(
-                date=request.POST["date"],
-                title=request.POST["title"],
-                description=request.POST["description"],
-                user=request.user,
-            )
-            task.save()
-            return HttpResponse(
-                serializers.serialize("json", [task]),
-                content_type="application/json",
-            )
+        task = Task(
+            date=date.fromisoformat(request.POST["date"]),
+            title=request.POST["title"],
+            description=request.POST["description"],
+            user=request.user,
+        )
+        task.save()
+        return HttpResponse(
+            serializers.serialize("json", [task]),
+            content_type="application/json",
+        )
     return HttpResponse("Invalid method", status_code=405)

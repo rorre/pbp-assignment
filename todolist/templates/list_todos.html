@@ -84,7 +84,7 @@
             </form>
             <form action="/todolist/delete/${id}" method="POST">
               {% csrf_token %}
-              <button class="btn btn-error">Delete</button>
+              <button class="btn btn-error removebtn" data-id="${id}">Delete</button>
             </form>
           </div>
         </div>
@@ -92,9 +92,27 @@
     `
   }
 
+  function removeTodo(e) {
+    const id = $(e.target).data("id")
+    e.preventDefault()
+    $.ajax({
+      type: 'DELETE',
+      url: '/todolist/delete/json/' + id,
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+      },
+      success: () => {
+        alert("Done!")
+        fetchData()
+      }
+    })
+  }
+
   function renderTodo(todos) {
     todos.map((todo) => {
-      container.append(createCardHtml(todo.fields, todo.pk))
+      const newNode = $(createCardHtml(todo.fields, todo.pk))
+      newNode.find(".removebtn").click(removeTodo)
+      container.append(newNode)
     })
   }
 

@@ -3,6 +3,7 @@ from django.urls import path
 from todolist.views import (
     add_todos_json,
     delete_todo,
+    delete_todo_json,
     login_user,
     logout_user,
     register,
@@ -21,6 +22,7 @@ urlpatterns = [
     path("logout/", logout_user, name="logout_user"),
     path("create/", create_todo, name="create_todo"),
     path("delete/<int:post_id>", delete_todo, name="delete_todo"),
+    path("delete/json/<int:post_id>", delete_todo_json, name="delete_todo_json"),
     path("update/<int:post_id>", update_todo, name="update_todo"),
     path("json", show_todos_json, name="show_todos_json"),
     path("create/json", add_todos_json),

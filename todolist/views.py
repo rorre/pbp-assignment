@@ -128,3 +128,16 @@ def add_todos_json(request: HttpRequest):
             content_type="application/json",
         )
     return HttpResponse("Invalid method", status_code=405)
+
+
+@login_required(login_url="/todolist/login")
+def delete_todo_json(request: HttpRequest, post_id: int):
+    if request.method == "DELETE":
+        task = Task.objects.filter(id=post_id, user=request.user).first()
+        if task:
+            task.delete()
+            return HttpResponse("OK")
+        else:
+            return HttpResponse("Not Found", status_code=404)
+
+    return HttpResponse("Invalid method", status_code=405)

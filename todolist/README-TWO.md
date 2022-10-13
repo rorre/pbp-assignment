@@ -26,9 +26,9 @@ dapat memanggil fungsi yang diberikan pada `onSuccess` dan memberi data hasil ke
 1. Membuat views untuk AJAX, dapat dilihat [di sini](https://github.com/rorre/pbp-assignment/blob/14cf526aa21f53dd883cb6a5bcf1486834d0eb25/todolist/views.py#L108-L143)
 2. Menaruh routing di `urls.py`, dan mapping sesuai function, dapat dilihat [di sini](https://github.com/rorre/pbp-assignment/blob/14cf526aa21f53dd883cb6a5bcf1486834d0eb25/todolist/urls.py#L25-L28)
 3. Rendering dirubah dari templating menjadi AJAX GET
-  a. Melakukan GET ke endpoint JSON
-  b. Memproses setiap entry, lalu membuat HTML untuk setiap card
-  c. Append pada container grid yang telah ditentukan
+    - Melakukan GET ke endpoint JSON
+    - Memproses setiap entry, lalu membuat HTML untuk setiap card
+    - Append pada container grid yang telah ditentukan
 4. Membuat modal dengan DaisyUI, lalu menaruh form di dalam modal tersebut
 5. Untuk tombol buat, di-hook dengan event `onClick` untuk melakukan AJAX POST
 6. Setelah berhasil, tutup modal
